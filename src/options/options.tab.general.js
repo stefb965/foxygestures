@@ -15,10 +15,6 @@ app.controller('OptionsTabGeneralCtrl', [
       statusTimeout: 2.0
     });
 
-    $scope.showDoubleRightClick = () => {
-      return 'doubleRightClick' in settings;
-    };
-
     // ----- Event handlers -----
     $scope.$on('reset', () => {
       let inSeconds;
@@ -29,6 +25,13 @@ app.controller('OptionsTabGeneralCtrl', [
     });
 
     // ----- Scope watches -----
+
+    // Set contextmenu event to mouseup when the button is 'right'.
+    $scope.$watch('settings.gestureButton', newValue => {
+      browser.browserSettings.contextMenuShowEvent.set({
+        value: (newValue === 2) ? 'mouseup' : 'mousedown'
+      });
+    });
 
     // Convert gesture timeout to milliseconds.
     $scope.$watch('controls.gestureTimeout', (newValue, oldValue) => {
